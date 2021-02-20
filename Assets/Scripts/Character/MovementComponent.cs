@@ -109,13 +109,21 @@ namespace Character
         {
             if (PlayerController.IsJumping) return;
 
-            if (!(InputVector.magnitude > 0)) MoveDirection = Vector3.zero;
-            
             MoveDirection = PlayerTransform.forward * InputVector.y + PlayerTransform.right * InputVector.x;
 
             float currentSpeed = PlayerController.IsRunning ? RunSpeed : WalkSpeed;
 
             Vector3 movementDirection = MoveDirection * (currentSpeed * Time.deltaTime);
+
+            
+
+            //if (!(InputVector.magnitude > 0)) MoveDirection = Vector3.zero;
+            
+            
+
+            
+
+            
 
             //PlayerTransform.position += movementDirection;
             PlayerNavMeshAgent.Move(movementDirection);
