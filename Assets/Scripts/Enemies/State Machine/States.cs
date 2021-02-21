@@ -1,6 +1,6 @@
 public class State
 {
-    private StateMachine StateMachine;
+    public StateMachine StateMachine;
     public float UpdateInterval { get; protected set; } = 1.0f;
 
     protected State(StateMachine stateMachine)

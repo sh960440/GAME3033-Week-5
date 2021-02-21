@@ -15,6 +15,8 @@ namespace Character
         [SerializeField] private float JumpThreshold = 0.1f;
         [SerializeField] private float JumpLandingCheckDelay = 0.1f;
 
+        [SerializeField] private float MoveDirectionBuffer = 2.0f;
+
         //Components
         private PlayerController PlayerController;
         private Animator PlayerAnimator;
@@ -23,6 +25,8 @@ namespace Character
         
         //References
         private Transform PlayerTransform;
+
+        private Vector3 NextPositionCheck;
 
         private Vector2 InputVector = Vector2.zero;
         private Vector3 MoveDirection = Vector3.zero;
@@ -115,18 +119,32 @@ namespace Character
 
             Vector3 movementDirection = MoveDirection * (currentSpeed * Time.deltaTime);
 
-            
+            NextPositionCheck = transform.position + MoveDirection * MoveDirectionBuffer;
+
+            if (NavMesh.SamplePosition(NextPositionCheck, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+            {
+                transform.position += movementDirection;
+            }
 
             //if (!(InputVector.magnitude > 0)) MoveDirection = Vector3.zero;
-            
-            
-
-            
-
-            
-
             //PlayerTransform.position += movementDirection;
-            PlayerNavMeshAgent.Move(movementDirection);
+            //PlayerNavMeshAgent.Move(movementDirection);
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!other.collider.CompareTag("Ground") || !PlayerController.IsJumping) return;
+
+            PlayerController.IsJumping = false;
+            PlayerAnimator.SetBool(IsJumpingHash, false);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (NextPositionCheck != Vector3.zero)
+            {
+                Gizmos.DrawSphere(NextPositionCheck, 0.5f);
+            }
         }
     }
 }

@@ -5,41 +5,41 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     public State CurrentState { get; private set; }
-    protected Dictionary<string, State> States;
+    protected Dictionary<ZombieStateType, State> States;
     private bool Running;
 
     private void Awake()
     {
-        States = new Dictionary<string, State>();
+        States = new Dictionary<ZombieStateType, State>();
     }
 
-    public void Initialize(string startingState)
+    public void Initialize(ZombieStateType startingState)
     {
         if (States.ContainsKey(startingState))
         {
             ChangeState(startingState);
         }
-        else if (States.ContainsKey("Idle"))
+        else if (States.ContainsKey(ZombieStateType.Idle))
         {
-            ChangeState("Idle");
+            ChangeState(ZombieStateType.Idle);
         }
     }
 
-    public void AddState(string stateName, State state)
+    public void AddState(ZombieStateType stateName, State state)
     {
         if (States.ContainsKey(stateName)) return;
 
         States.Add(stateName, state);
     }
 
-    public void RemoveState(string stateName)
+    public void RemoveState(ZombieStateType stateName)
     {
         if (!States.ContainsKey(stateName)) return;
 
         States.Remove(stateName);
     }
 
-    public void ChangeState(string nextState)
+    public void ChangeState(ZombieStateType nextState)
     {
         if (Running)
         {

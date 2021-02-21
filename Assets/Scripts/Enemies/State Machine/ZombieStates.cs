@@ -6,3 +6,11 @@ public class ZombieStates : State
         OwnerZombie = zombie;
     }
 }
+
+public enum ZombieStateType
+{
+    Idle,
+    Attack,
+    Follow,
+    Dead
+}
